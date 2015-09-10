@@ -3,20 +3,18 @@ extends ../layouts/default
 mixin showproduct(eachproduct)
 	.col-sm-4.col-lg-4.col-md-4
 		.thumbnail
-			img(src='/productimages/'+eachproduct.image.filename, alt='')
+			a(href="/item/"+eachproduct._id)
+				img(src='/productimages/'+eachproduct.image.filename, alt='')
 			.caption
 				h4.pull-right ￥ #{eachproduct.price}
 				h4
-					a(href='#') #{eachproduct.name}
+					a(href="/item/"+eachproduct._id) #{eachproduct.name}
 
 block content
 	.container#body
 		.row
 			.col-md-3
-				.list-group
-					a.list-group-item(href='#') Young系列
-					a.list-group-item(href='#') 木质系列
-				p.lead Young系列
+				include ../layouts/side-navi.jade
 			.col-md-9
 				.row.carousel-holder
 					.col-md-12

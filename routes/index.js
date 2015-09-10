@@ -35,8 +35,11 @@ var routes = {
 exports = module.exports = function(app) {
 
 	// Views
-	app.get('/', routes.views.shop);
-	app.get('/item', routes.views.item);
+	app.get('/', function(req,res){
+		res.redirect('/shop/all');
+	});
+	app.get('/shop/:series', routes.views.shop);
+	app.get('/item/:id', routes.views.item);
 
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
