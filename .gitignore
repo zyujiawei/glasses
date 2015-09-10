@@ -32,3 +32,4 @@ build/Release
 
  # Database files
 data/
+node_modules/
