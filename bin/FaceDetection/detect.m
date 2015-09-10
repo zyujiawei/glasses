@@ -47,7 +47,12 @@ function [ output_args ] = detect( image_path, bbox_method, visualize )
 
     clm_model='model/DRMF_Model.mat';
     load(clm_model);    
-    data=DRMF(clm_model,data,bbox_method,visualize);    
+    data=DRMF(clm_model,data,bbox_method,visualize);  
+    
+    figure(1)
+    cla, imagesc(data.img), hold on, axis image
+    plot(data.points(:,1),data.points(:,2),'bo')
+    print([image_path,'.png'],'-dpng')
     save([image_path,'.mat'] ,'data');
     %------------------------------------------------%
     output_args = data;
