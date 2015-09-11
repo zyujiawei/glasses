@@ -29,6 +29,10 @@ body {
     white-space: nowrap;
 }
 
+.caption-full p {
+	padding-top: 10px;
+}
+
 .thumbnail img {
     width: 100%;
 }

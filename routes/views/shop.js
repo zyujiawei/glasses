@@ -21,30 +21,42 @@ exports = module.exports = function(req, res) {
 	// item in the header navigation.
 
 	view.on('init', function(next) {
-		// keystone.list('Series').model.findOne()
-		// .where('name', series)
-		// .exec(function(err, result) {
-		// 	if (result == null){
-		// 		console.log("result empty");
-		// 	} else{
-		// 		console.log(series);
-		// 		console.log(result);
-		// 	}
-		// 	next(err);
-		// 		// do something with posts
-		// });
+		keystone.list('Series').model.findOne()
+		.where('name', series)
+		.exec(function(err, result) {
+			var q = keystone.list('Product').paginate({
+					page: req.query.page || 1,
+					perPage: 10,
+					maxPages: 10
+				})
+				.populate('Series')
+				.sort('-publishedDate');
+			//如果series为all则不用筛选，否则筛选出相应的系列	
+			if (result != null){
+				q = q.where('series',result._id);
+			}
 
-		keystone.list('Product').paginate({
-				page: req.query.page || 1,
-				perPage: 10,
-				maxPages: 10
-			})
-			.populate('Series')
-			.sort('-publishedDate')
-			.exec(function(err, results) {
-				locals.data.products = results;
-				next(err);
-			});
+				q.populate('Series')
+					.sort('-publishedDate')
+					.exec(function(err, results) {
+						console.log(results);
+						locals.data.products = results;
+						next();
+					});
+				// do something with posts
+		});
+
+		// keystone.list('Product').paginate({
+		// 		page: req.query.page || 1,
+		// 		perPage: 10,
+		// 		maxPages: 10
+		// 	})
+		// 	.populate('Series')
+		// 	.sort('-publishedDate')
+		// 	.exec(function(err, results) {
+		// 		locals.data.products = results;
+		// 		next(err);
+		// 	});
 	});
 	// Render the view
 	view.render('shop');

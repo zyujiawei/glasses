@@ -12,6 +12,7 @@ block content
 						h4.pull-right ￥ #{data.products.price}
 						h4
 							a(href='#') #{data.products.name}
+						input(class="btn btn-default" type="file" onchange="javascript:alert(this.value)")
 						p
 							| 产品描述：#{data.products.description}
 						p
