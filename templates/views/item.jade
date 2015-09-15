@@ -12,7 +12,10 @@ block content
 						h4.pull-right ￥ #{data.products.price}
 						h4
 							a(href='#') #{data.products.name}
-						input(class="btn btn-default" type="file" onchange="javascript:alert(this.value)")
+						form#uploadform(action="/upload",method="post",enctype="multipart/form-data")
+							input#file(name="image",type="file",style="display:none")
+							button.btn.btn-default#uploadbutton 试戴
+							button#uploading 上传
 						p
 							| 产品描述：#{data.products.description}
 						p

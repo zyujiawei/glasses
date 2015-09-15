@@ -16,7 +16,6 @@ exports = module.exports = function(req, res) {
     .populate('Series')
     .exec(function(err, results) {
 			locals.data.products = results;
-			console.log(locals.data.products);
 			next(err);
         // do something with posts
     });

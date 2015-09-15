@@ -40,6 +40,7 @@ exports = module.exports = function(app) {
 	});
 	app.get('/shop/:series', routes.views.shop);
 	app.get('/item/:id', routes.views.item);
+	app.post('/upload',routes.views.upload);
 
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
