@@ -5,8 +5,8 @@ var keystone = require('keystone'),
  * ==========
  */
 var userphoto = new keystone.List('Userphoto', {
-	map: { name: 'name' },
-	autokey: { path: 'slug', from: 'name', unique: true },
+	map: { _id: '_id' },
+	autokey: { path: 'slug', from: '_id', unique: true },
 	singular: '用户处理前图片',
 	plural: '用户处理前图片'
 });

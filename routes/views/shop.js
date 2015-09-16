@@ -31,7 +31,7 @@ exports = module.exports = function(req, res) {
 				})
 				.populate('Series')
 				.sort('-publishedDate');
-			//如果series为all则不用筛选，否则筛选出相应的系列	
+			//如果series为all则不用筛选，否则筛选出相应的系列
 			if (result != null){
 				q = q.where('series',result._id);
 			}
@@ -39,7 +39,6 @@ exports = module.exports = function(req, res) {
 				q.populate('Series')
 					.sort('-publishedDate')
 					.exec(function(err, results) {
-						console.log(results);
 						locals.data.products = results;
 						next();
 					});

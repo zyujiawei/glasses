@@ -21,6 +21,7 @@
 var keystone = require('keystone');
 var middleware = require('./middleware');
 var importRoutes = keystone.importer(__dirname);
+var https = require('https');
 
 // Common Middleware
 keystone.pre('routes', middleware.initLocals);
@@ -31,19 +32,65 @@ var routes = {
 	views: importRoutes('./views')
 };
 
+//var timeout = setInterval(getToken() , 7190000);
+
 // Setup Route Bindings
 exports = module.exports = function(app) {
 
 	// Views
-	app.get('/', function(req,res){
-		res.redirect('/shop/all');
-	});
+
+	app.get('/auth', routes.views.auth);
 	app.get('/shop/:series', routes.views.shop);
 	app.get('/item/:id', routes.views.item);
 	app.post('/upload',routes.views.upload);
-
+	app.get('/', function(req,res){
+		res.redirect('/shop/all');
+	});
 
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 
 };
+
+function getToken(){
+	console.log("Server requesting token");
+	https.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5a37e2ee2d7b1c0&secret=5656bb63e98d72569d511697db195fbe', function(res) {
+		res.on('data', function(d) {
+			var json = JSON.parse(d.toString());
+			token = keystone.list('Access_token');
+			token.model.remove(function(err) {
+	        // 删除数据库中原有的token
+	    });
+			var newPost = new token.model({
+				token: json.access_token,
+			});
+			newPost.save();
+			console.log("Token saved");
+			getTicket(json.access_token);
+		});
+	}).on('error', function(e) {
+		console.error("error"+e);
+	});
+
+}
+
+function getTicket(token){
+	console.log("Server requesting ticket with token"+token)
+	https.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token+'&type=jsapi', function(res) {
+		res.on('data', function(d) {
+			var json = JSON.parse(d.toString());
+			token = keystone.list('Jsapi');
+			token.model.remove(function(err) {
+	        // 删除数据库中原有的token
+	    });
+			var newPost = new token.model({
+				ticket: json.ticket,
+			});
+			newPost.save();
+			console.log("Ticket saved");
+		});
+	}).on('error', function(e) {
+		console.error("error"+e);
+	});
+
+}

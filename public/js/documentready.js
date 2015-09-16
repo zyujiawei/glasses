@@ -39,13 +39,13 @@ $(document).ready(function(){
 	});
 
 	$("#file").change(function(){
-
-	});
-
-	$("#uploading").click(function(e){
 		$("#uploadform").ajaxSubmit(options);
 		return false;
 	});
+
+	// $("#uploading").click(function(e){
+	//
+	// });
 
 
 });
