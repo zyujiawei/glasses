@@ -18,21 +18,21 @@ wx.ready(function () {
 	    count: 1, // 默认9
 	    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
 	    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-	    success: function (res) {
+	    complete: function (res) {
 	        var imglocalIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
 
 					alert(imglocalIds);
 					wx.uploadImage({
 					localId: imglocalIds, // 需要上传的图片的本地ID，由chooseImage接口获得
 					isShowProgressTips: 1, // 默认为1，显示进度提示
-					success: function (res) {
+					complete: function (res) {
 							 var imgserverId = res.serverId; // 返回图片的服务器端ID
 
 
 							 wx.downloadImage({
 								serverId: imgserverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
 								isShowProgressTips: 1, // 默认为1，显示进度提示
-								success: function (res) {
+								complete: function (res) {
 								 var localId = res.localId; // 返回图片下载后的本地ID
 
 
