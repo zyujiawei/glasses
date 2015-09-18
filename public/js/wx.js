@@ -30,7 +30,8 @@ wx.ready(function () {
     isShowProgressTips: 1, // 默认为1，显示进度提示
     success: function (res) {
          imgserverId = res.serverId; // 返回图片的服务器端ID
-    }
+    	}
+		});
 
 		wx.downloadImage({
     serverId: imgserverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
@@ -40,18 +41,11 @@ wx.ready(function () {
 			$('#photoModal').on('show.bs.modal', function (event) {
 			 var modal = $(this)
 			 modal.find('#loadedimg').attr("src",localId);
-		 })
+		 	});
 			$('#photoModal').modal('toggle');
-		 };
-
-    }
-});
-});
-
-
-
-
-  });
+		 }
+	 	});
+	});
 });
 wx.error(function (res) {
 	alert(res.errMsg);
