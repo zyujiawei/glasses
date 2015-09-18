@@ -34,7 +34,7 @@ $(document).ready(function(){
 	};
 
 	$("#uploadbutton").click(function(e){
-		$('#file').click();
+		//$('#file').click();
 		return false;
 	});
 

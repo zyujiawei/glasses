@@ -1,6 +1,6 @@
 wx.ready(function () {
   // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
-  $('#uploadbutton').onclick = function () {
+	$("#uploadbutton").click(function () {
     wx.checkJsApi({
       jsApiList: [
 				'checkJsApi',
@@ -13,7 +13,7 @@ wx.ready(function () {
         alert(JSON.stringify(res));
       }
     });
-  };
+  });
 });
 wx.error(function (res) {
 	alert(res.errMsg);
