@@ -1,4 +1,5 @@
-var keystone = require('keystone');
+var keystone = require('keystone'),
+jsSHA = require('jssha');
 
 exports = module.exports = function(req, res) {
 
@@ -6,21 +7,28 @@ exports = module.exports = function(req, res) {
 	var locals = res.locals;
 	var id = req.params.id;
 	locals.data = {
-		products: []
+		products: [],
+		jsdata:[]
 	};
 	locals.section = 'home';
 
-	console.log(time());
+
 
 	view.on('init', function(next) {
-		keystone.list('Product').model.findOne()
-    .where('_id', id)
-    .populate('Series')
-    .exec(function(err, results) {
-			locals.data.products = results;
-			next(err);
-        // do something with posts
-    });
+		keystone.list('Jsapi').model.findOne()
+		.exec(function(err, results) {
+			//保存微信js缓存到本地
+			locals.data.jsdata = sign(results.ticket,'http://glasses.szqhyc.com'+req.url);
+
+			//保存了js信息后接着再查询商品信息
+			keystone.list('Product').model.findOne()
+			.where('_id', id)
+			.populate('Series')
+			.exec(function(err, results) {
+				locals.data.products = results;
+				next(err);
+			});
+		});
 	});
 
 	// Render the view
@@ -68,9 +76,9 @@ var sign = function (jsapi_ticket, url) {
     url: url
   };
   var string = raw(ret);
-      jsSHA = require('jssha');
-      shaObj = new jsSHA(string, 'TEXT');
-  ret.signature = shaObj.getHash('SHA-1', 'HEX');
+      shaObj = new jsSHA('SHA-1', 'TEXT');
+	shaObj.update(string);
+  ret.signature = shaObj.getHash('HEX');
 
   return ret;
 };

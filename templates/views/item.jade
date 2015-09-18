@@ -19,3 +19,19 @@ block content
 							| 产品描述：#{data.products.description}
 						p
 							| 产品信息：#{data.products.info}
+		script(type='text/javascript').
+			wx.config({
+				debug: false,
+				appId: 'wxd5a37e2ee2d7b1c0',
+				timestamp: #{data.jsdata.timestamp},
+				nonceStr: '#{data.jsdata.nonceStr}',
+				signature: '#{data.jsdata.signature}',
+				jsApiList: [
+					'checkJsApi',
+					'chooseImage',
+					'previewImage',
+					'uploadImage',
+					'downloadImage'
+				]
+			});
+		script(src='/js/wx.js')

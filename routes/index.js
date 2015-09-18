@@ -53,7 +53,7 @@ exports = module.exports = function(app) {
 };
 
 function getToken(){
-	console.log("Server requesting token");
+	console.log("Server: requesting token");
 	https.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5a37e2ee2d7b1c0&secret=5656bb63e98d72569d511697db195fbe', function(res) {
 		res.on('data', function(d) {
 			var json = JSON.parse(d.toString());
@@ -65,7 +65,7 @@ function getToken(){
 				token: json.access_token,
 			});
 			newPost.save();
-			console.log("Token saved");
+			console.log("Server: Token saved");
 			getTicket(json.access_token);
 		});
 	}).on('error', function(e) {
@@ -75,7 +75,7 @@ function getToken(){
 }
 
 function getTicket(token){
-	console.log("Server requesting ticket with token"+token)
+	console.log("Server: requesting ticket with token"+token)
 	https.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token+'&type=jsapi', function(res) {
 		res.on('data', function(d) {
 			var json = JSON.parse(d.toString());
@@ -87,7 +87,7 @@ function getTicket(token){
 				ticket: json.ticket,
 			});
 			newPost.save();
-			console.log("Ticket saved");
+			console.log("Server: Ticket saved");
 		});
 	}).on('error', function(e) {
 		console.error("error"+e);
