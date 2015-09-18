@@ -32,7 +32,7 @@ var routes = {
 	views: importRoutes('./views')
 };
 
-//var timeout = setInterval(getToken() , 7190000);
+var timeout = setInterval(getToken() , 7190000);
 
 // Setup Route Bindings
 exports = module.exports = function(app) {
