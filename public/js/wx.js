@@ -23,14 +23,14 @@ wx.ready(function () {
 
 					alert(imglocalIds);
 					wx.uploadImage({
-					localId: imglocalIds, // 需要上传的图片的本地ID，由chooseImage接口获得
+					localId: imglocalIds.toString(), // 需要上传的图片的本地ID，由chooseImage接口获得
 					isShowProgressTips: 1, // 默认为1，显示进度提示
 					complete: function (res) {
 							 var imgserverId = res.serverId; // 返回图片的服务器端ID
 
 
 							 wx.downloadImage({
-								serverId: imgserverId, // 需要下载的图片的服务器端ID，由uploadImage接口获得
+								serverId: imgserverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
 								isShowProgressTips: 1, // 默认为1，显示进度提示
 								complete: function (res) {
 								 var localId = res.localId; // 返回图片下载后的本地ID
