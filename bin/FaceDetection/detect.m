@@ -1,4 +1,4 @@
-function [ output_args ] = detect( image_path, bbox_method, visualize )
+function [ output_args ] = detect( image_path, out_path, bbox_method, visualize )
     addpath(genpath('.'));
 
     % ------------------------------------------------%
@@ -50,10 +50,11 @@ function [ output_args ] = detect( image_path, bbox_method, visualize )
     data=DRMF(clm_model,data,bbox_method,visualize);  
     
     figure(1)
-    cla, imagesc(data.img), hold on, axis image
+    cla, imagesc(data.img), hold on, axis off
     plot(data.points(:,1),data.points(:,2),'bo')
-    print([image_path,'.png'],'-dpng')
-    save([image_path,'.mat'] ,'data');
+    [imgpath, imgname, imgext] = fileparts(image_path);
+    print([out_path, '/', imgname, '.png'],'-dpng')
+    save([out_path, '/', imgname, '.mat'] ,'data');
     %------------------------------------------------%
     output_args = data;
 end
