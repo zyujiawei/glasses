@@ -34,6 +34,8 @@ var routes = {
 
 var timeout = setInterval(getToken() , 7190000);
 
+
+
 // Setup Route Bindings
 exports = module.exports = function(app) {
 
@@ -66,6 +68,7 @@ function getToken(){
 			});
 			newPost.save();
 			console.log("Server: Token saved");
+			keystone.set('token',json.access_token);
 			getTicket(json.access_token);
 		});
 	}).on('error', function(e) {
@@ -75,7 +78,7 @@ function getToken(){
 }
 
 function getTicket(token){
-	console.log("Server: requesting ticket with token"+token)
+	console.log("Server: requesting ticket with token: "+token)
 	https.get('https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+token+'&type=jsapi', function(res) {
 		res.on('data', function(d) {
 			var json = JSON.parse(d.toString());

@@ -18,7 +18,7 @@ exports = module.exports = function(req, res) {
 		keystone.list('Jsapi').model.findOne()
 		.exec(function(err, results) {
 			//保存微信js缓存到本地
-			locals.data.jsdata = sign(results.ticket,'http://glasses.szqhyc.com'+req.url);
+			locals.data.jsdata = sign(results.ticket,'http://yujiawei.vicp.net:3000'+req.url);
 
 			//保存了js信息后接着再查询商品信息
 			keystone.list('Product').model.findOne()

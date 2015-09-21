@@ -5,6 +5,7 @@
   "dependencies": {
     "async": "^0.9.0",
     "dotenv": "^1.1.0",
+    "fs": "0.0.2",
     "jssha": "^2.0.1",
     "keystone": "^0.3.11",
     "underscore": "^1.8.0"
