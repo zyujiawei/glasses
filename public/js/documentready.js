@@ -30,6 +30,7 @@ $(document).ready(function(){
 	  var modal = $(this)
 	  modal.find('.modal-body').text(responseText);
 	})
+
 	 $('#photoModal').modal('toggle');
 	};
 
