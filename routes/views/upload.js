@@ -7,11 +7,19 @@ exports = module.exports = function(req, res) {
 
 	var view = new keystone.View(req, res);
 	//local path to save
-	var DOWNLOAD_DIR = './public/imagesbefore/';
+	//图片下载保存地址
+	var IMAGEBEFORE = './public/imagesbefore/';
+	//图片处理后文件夹名称，与imagesbefore在同一级别
+	var IMAGEAFTER = './public/imagesafter/';
 	console.log("token: " + keystone.get('token'));
 	console.log("mediaid:" + req.query.serverId);
 
-	savetolocal(keystone.get('token'),req.query.serverId,DOWNLOAD_DIR);
+	savetolocal(keystone.get('token'),req.query.serverId,IMAGEBEFORE,IMAGEAFTER,function(){
+			console.log("we are here");
+			res.contentType('text/plain');//返回的数据类型
+			res.send('/imagesafter/'+req.query.serverId+'.png');//给客户端返回一个json格式的数据
+			res.end();
+	});
 		// App variables
 
 
@@ -35,11 +43,11 @@ exports = module.exports = function(req, res) {
 // 	return photo;
 // }
 
-function	savetolocal(token,serverId,DOWNLOAD_DIR){
+function	savetolocal(token,serverId,locationtosave,locationforprocess,callback){
 	var file_url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token='+token+'&media_id='+serverId;
 	// We will be downloading the files to a directory, so make sure it's there
 	// This step is not required if you have manually created the directory
-	var mkdir = 'mkdir -p ' + DOWNLOAD_DIR;
+	var mkdir = 'mkdir -p ' + locationtosave;
 	var child = exec(mkdir, function(err, stdout, stderr) {
 			if (err) throw err;
 			else download_file_curl(file_url);
@@ -51,7 +59,7 @@ function	savetolocal(token,serverId,DOWNLOAD_DIR){
 			// extract the file name
 			var file_name = serverId+'.jpg';
 			// create an instance of writable stream
-			var file = fs.createWriteStream(DOWNLOAD_DIR + file_name);
+			var file = fs.createWriteStream(locationtosave + file_name);
 			// execute curl using child_process' spawn function
 			var curl = spawn('curl', ['-G',file_url]);
 			// add a 'data' event listener for the spawn instance
@@ -59,10 +67,12 @@ function	savetolocal(token,serverId,DOWNLOAD_DIR){
 			// add an 'end' event listener to close the writeable stream
 			curl.stdout.on('end', function(data) {
 					file.end();
-					processimage(DOWNLOAD_DIR + file_name);
-					console.log(file_name + ' downloaded to ' + DOWNLOAD_DIR);
+					console.log(file_name + ' downloaded to ' + locationtosave);
 			});
 			// when the spawn child process exits, check if there were any errors and close the writeable stream
+			curl.on('close',function(code){
+					processimage(file_name,locationtosave,locationforprocess,callback);
+			});
 			curl.on('exit', function(code) {
 					if (code != 0) {
 							console.log('Failed: ' + code);
@@ -71,15 +81,18 @@ function	savetolocal(token,serverId,DOWNLOAD_DIR){
 	};
 }
 
-function processimage(path){
-	var facedetection = './bin/FaceDetection/detect.sh'
-	var detect = spawn(facedetection, [path]);
-	setTimeout(function(){
-		console.log('expecting');
-	},5000);
-	detect.stdout.on('data', function(data) { console.log(data); });
+function processimage(file_name,locationtosave,locationforprocess,callback){
+	//运行matlab程序
+	var detect = spawn('./bin/FaceDetection/detect.sh', [locationtosave+file_name,locationforprocess]);
+	console.log(locationtosave+file_name);
+	console.log(locationforprocess);
+
+	detect.stdout.on('data', function(data) { console.log(data.toString()) });
+
 	// add an 'end' event listener to close the writeable stream
 	detect.stdout.on('end', function(data) {
-			console.log('detection ends');
+			console.log('detection done');
 	});
+
+	detect.on('close',callback);
 }

@@ -1,1 +1,7 @@
-matlab -nodisplay -nosplash -nodesktop -r "detect('$1','$2',1,0);exit;"
+CURRENT_PATH=$(cd "$(dirname "$0")"; pwd)
+IMAGEBEFORE_PATH=$(cd "$(dirname "$1")"; pwd)
+IMAGEAFTER_PATH=$(cd "$2"; pwd)
+IMAGEBEFORE_NAME=$(basename "$1")
+cd $CURRENT_PATH
+echo $IMAGEAFTER_PATH
+matlab -nodisplay -nosplash -nodesktop -r "detect('$IMAGEBEFORE_PATH/$IMAGEBEFORE_NAME','$IMAGEAFTER_PATH',1,0);exit;"

@@ -22,9 +22,8 @@ wx.ready(function () {
 		 //dataType: null,           //html(默认), xml, script, json...接受服务端返回的类型
 		 clearForm: true,          //成功提交后，清除所有表单元素的值
 		 //resetForm: true,          //成功提交后，重置所有表单元素的值
-		 timeout: 3000               //限制请求的时间，当请求大于3秒后，跳出请求
+		 timeout: 20000               //限制请求的时间，当请求大于3秒后，跳出请求
 		}
-		console.log(options);
 		return options;
 	}
 
@@ -41,17 +40,37 @@ wx.ready(function () {
 
 	function showResponse(responseText, statusText){
 	 //dataType=xml
-	 $('#photoModal').on('show.bs.modal', function (event) {});
-
-		// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-		// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	 alert(responseText);
+	 var modal = $('#photoModal');
+	 var img = modal.find('#loadedimg');
+	 modal.find('#loading').fadeOut(500);
+	 img.attr('src',responseText);
+	 alert("src: "+ img.attr("src"));
 	};
 
-	$("#uploadbutton").click(function () {
+	$('#photoModal').on('show.bs.modal', function (event) {
 
+	 var modal = $(this);
+	 //调整图片大小
+	 var img = modal.find('#loadedimg');
+	 // var ratio = img.height() / img.width();
+	 img.css("width",'100%');
+	 // var newh = img.width() * ratio;
+	 // img.css("height",newh);
+	});
+
+	$('#photoModal').on('hidden.bs.modal', function (event) {
+
+	 var modal = $(this);
+	 var img = modal.find('#loadedimg');
+	 img.attr("src",'');
+	 modal.find('#loading').show();
+	});
+
+	$("#uploadbutton").click(function () {
 		wx.chooseImage({
 	    count: 1, // 默认9
-	    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+	    sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
 	    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
 	    success: function (res) {
 	        var imglocalIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
@@ -61,30 +80,8 @@ wx.ready(function () {
 					isShowProgressTips: 1, // 默认为1，显示进度提示
 					success: function (res) {
 							 var imgserverId = res.serverId; // 返回图片的服务器端ID
-
 							 $("#uploadform").ajaxSubmit(getOptions(imgserverId));
-
-
-							 wx.downloadImage({
-								serverId: imgserverId.toString(), // 需要下载的图片的服务器端ID，由uploadImage接口获得
-								isShowProgressTips: 1, // 默认为1，显示进度提示
-								success: function (res) {
-								 var localId = res.localId; // 返回图片下载后的本地ID
-
-								// 	显示图片代码
-								//  $('#photoModal').on('show.bs.modal', function (event) {
-								// 	var modal = $(this)
-								// 	//调整图片大小
-								// 	var img = modal.find('#loadedimg');
-								// 	var ratio = img.height() / img.width();
-								// 	img.css("width",'100%');
-								// 	var newh = img.width() * ratio;
-								// 	img.css("height",newh);
-								// 	img.attr("src",localId);
-								//  });
-								 $('#photoModal').modal('toggle');
-								}
-							 });
+							 $('#photoModal').modal('toggle');
 						}
 					});
 	    }
