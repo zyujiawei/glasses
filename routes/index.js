@@ -32,7 +32,7 @@ var routes = {
 	views: importRoutes('./views')
 };
 
-var timeout = setInterval(getToken() , 7190000);
+var timeout = setInterval(getToken ,getToken()*1000);
 
 
 
@@ -55,6 +55,8 @@ exports = module.exports = function(app) {
 };
 
 function getToken(){
+	//默认7000秒过期
+	var expires_in = 7000;
 	console.log("Server: requesting token");
 	https.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxd5a37e2ee2d7b1c0&secret=5656bb63e98d72569d511697db195fbe', function(res) {
 		res.on('data', function(d) {
@@ -67,6 +69,7 @@ function getToken(){
 				token: json.access_token,
 			});
 			newPost.save();
+			expires_in = json.expires_in;
 			console.log("Server: Token saved");
 			keystone.set('token',json.access_token);
 			getTicket(json.access_token);
@@ -74,7 +77,7 @@ function getToken(){
 	}).on('error', function(e) {
 		console.error("error"+e);
 	});
-
+	return expires_in;
 }
 
 function getTicket(token){

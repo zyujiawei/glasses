@@ -1,40 +1,41 @@
 extends ../layouts/default
 
 mixin showproduct(eachproduct)
-	.col-sm-4.col-lg-4.col-md-4
+	.col-sm-4.col-lg-4.col-md-4.col-xs-6
 		.thumbnail
 			a(href="/item/"+eachproduct._id)
 				img(src='/productimages/'+eachproduct.image.filename, alt='')
-			.caption
-				h4.pull-right ￥ #{eachproduct.price}
-				h4
-					a(href="/item/"+eachproduct._id) #{eachproduct.name}
+			//- .caption
+			//- 	h4.pull-right ￥ #{eachproduct.price}
+			//- 	h4
+			//- 		a(href="/item/"+eachproduct._id) #{eachproduct.name}
 
 block content
 	.container#body
-		.row
-			.col-md-3
-				include ../layouts/side-navi.jade
-			.col-md-9
-				.row.carousel-holder
-					.col-md-12
-						#carousel-example-generic.carousel.slide(data-ride='carousel')
-							ol.carousel-indicators
-								li.active(data-target='#carousel-example-generic', data-slide-to='0')
-								li(data-target='#carousel-example-generic', data-slide-to='1')
-								li(data-target='#carousel-example-generic', data-slide-to='2')
-							.carousel-inner
-								.item.active
-									img.slide-image(src='http://placehold.it/800x300', alt='')
-								.item
-									img.slide-image(src='http://placehold.it/800x300', alt='')
-								.item
-									img.slide-image(src='http://placehold.it/800x300', alt='')
-							a.left.carousel-control(href='#carousel-example-generic', data-slide='prev')
-								span.glyphicon.glyphicon-chevron-left
-							a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
-								span.glyphicon.glyphicon-chevron-right
 				.row
+					.col-md-12.bannergroup
+							img(src='/images/0.jpg')
+							img(src='/images/1.jpg')
+							img(src='/images/2.jpg')
+				//- .row.carousel-holder
+				//- 	.col-md-12
+				//- 		#carousel-example-generic.carousel.slide(data-ride='carousel')
+				//- 			ol.carousel-indicators
+				//- 				li.active(data-target='#ca5example-generic', data-slide-to='0')
+				//- 				li(data-target='#carousel-example-generic', data-slide-to='1')
+				//- 				li(data-target='#carousel-example-generic', data-slide-to='2')
+				//- 			.carousel-inner
+				//- 				.item.active
+				//- 					img.slide-image(src='http://placehold.it/800x300', alt='')
+				//- 				.item
+				//- 					img.slide-image(src='http://placehold.it/800x300', alt='')
+				//- 				.item
+				//- 					img.slide-image(src='http://placehold.it/800x300', alt='')
+				//- 			a.left.carousel-control(href='#carousel-example-generic', data-slide='prev')
+				//- 				span.glyphicon.glyphicon-chevron-left
+				//- 			a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
+				//- 				span.glyphicon.glyphicon-chevron-right
+				.row.productsrow
 						each eachproduct in data.products.results
 							+showproduct(eachproduct)
 					//- .col-sm-4.col-lg-4.col-md-4

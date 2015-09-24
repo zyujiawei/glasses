@@ -3,9 +3,7 @@ extends ../layouts/default
 block content
 	.container
 		.row
-			.col-md-3
-				include ../layouts/side-navi.jade
-			.col-md-9
+			.col-md-12
 				.thumbnail
 					img.img-responsive(src='/productimages/'+data.products.image.filename, alt='')
 					.caption-full
