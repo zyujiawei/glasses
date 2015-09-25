@@ -1,25 +1,53 @@
 extends ../layouts/default
+mixin imgs(n)
+	img.img-responsive(src='/images/'+n+'.jpg', alt='')
 
 block content
 	.container
 		.row
 			.col-md-12
-				.thumbnail
+				.productdetail
 					img.img-responsive(src='/productimages/'+data.products.image.filename, alt='')
-					.caption-full
-						h4.pull-right ￥ #{data.products.price}
-						h4
-							a(href='#') #{data.products.name}
+		.caption-full.row
+			.col-md-12.col-xs-12
+				h3.row
+					.col-xs-6.col-md-6 ￥ #{data.products.price}
+					div.col-xs-6.col-md-6 
 						form#uploadform(action="/upload",method="post",enctype="multipart/form-data")
 							input#file(name="image",type="file",style="display:none")
-							button.btn.btn-default#uploadbutton 试戴
-						p
-							| 产品描述：#{data.products.description}
-						p
-							| 产品信息：#{data.products.info}
+							button.btn.btn-default.pull-right#uploadbutton 试戴
+				.row
+					h4.col-md-12.col-xs-12 
+						a(role="button",data-toggle="collapse",href="#glassparam" aria-expanded="false",aria-controls="glassparam") 眼镜参数
+						div.collapse(id="glassparam",aria-labelledby="glassparam")
+							img.img-responsive(src='/images/21.jpg', alt='')
+							img.img-responsive(src='/images/22.jpg', alt='')
+					
+				.row
+					h4.col-md-12.col-xs-12
+						a.col-xs-4.col-md-4(tabindex="0",role="button",data-toggle="popover", data-trigger="focus",data-placement="bottom",data-content="实物破损、不符、质量问题，退换货商家承担往返运费。") 
+							span.glyphicon.glyphicon-ok
+							|  7天退换
+						a.col-xs-4.col-md-4(tabindex="0",role="button",data-toggle="popover", data-trigger="focus",data-placement="bottom",data-content="运费由商家承担。") 
+							span.glyphicon.glyphicon-ok
+							|  全场包月
+						a.col-xs-4.col-md-4(tabindex="0",role="button",data-toggle="popover", data-trigger="focus",data-placement="bottom",data-content="30天内免费更换一次镜片。") 
+							span.glyphicon.glyphicon-ok
+							|  镜片更换
+							
+		.row
+			.col-md-12
+				.productdetail
+					-var n = 11;
+						while n <= 20
+							+imgs(n++)
+		nav.navbar.navbar-default.navbar-fixed-bottom
+			.container
+				a.btn.btn-default.pull-right.navbar-btn 下一步
 		script(type='text/javascript').
+			$('[data-toggle="popover"]').popover();
 			wx.config({
-				debug: true,
+				debug: false,
 				appId: 'wxd5a37e2ee2d7b1c0',
 				timestamp: #{data.jsdata.timestamp},
 				nonceStr: '#{data.jsdata.nonceStr}',

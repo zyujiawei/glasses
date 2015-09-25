@@ -5,7 +5,9 @@
  */
 
 body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    padding-top: 50px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+		padding-bottom: 50px;
+		background-color: #F7EED6;
 }
 
 .slide-image {
@@ -33,6 +35,11 @@ body {
 	padding-top: 10px;
 }
 
+.caption-full a {
+	font-size: 9px;
+	color: grey;
+}
+
 .thumbnail img {
     width: 100%;
 }
@@ -53,7 +60,7 @@ body {
 }
 
 footer {
-    margin: 50px 0;
+    margin: auto;
 }
 
 .bannergroup img {
@@ -63,6 +70,22 @@ footer {
 
 .productsrow{
 		margin-top: 10px;
+		display: block;
+		height: auto;
+}
+
+.productdetail img{
+	margin: auto;
+}
+
+body{
+
+}
+
+body > .container > .row{
+	background-color: #FFFFFF;
+	box-shadow: 0px 3px 3px #cccccc;
+	margin-bottom: 20px;
 }
 
 /*#loadedimg {
